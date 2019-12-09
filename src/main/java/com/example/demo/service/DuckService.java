@@ -1,0 +1,48 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.exceptions.DuckNotFoundException;
+import com.example.demo.persistence.domain.Duck;
+import com.example.demo.persistence.repo.DuckRepo;
+
+@Service
+public class DuckService {
+	
+	
+	public Duck createDuck(Duck duck) {
+		return this.repo.save(duck);
+	}
+	
+	public List<Duck> readDucks() {
+		return this.repo.findAll();
+	}
+	
+	public Duck findDuckByID(Long id) {
+		return this.repo.findById(id).orElseThrow(
+				() -> new DuckNotFoundException());
+	}
+	
+	public Duck updateDuck(Duck duck, Long id) {
+		Duck toUpdate = this.repo.getOne(id);
+		toUpdate.setName(duck.getName());
+		toUpdate.setColour(duck.getColour());
+		toUpdate.setHabitat(duck.getHabitat());
+		return this.repo.save(toUpdate);
+	}
+	
+	public void deleteDuck(Long id) {
+		this.repo.deleteById(id);
+	}
+	
+	private DuckRepo repo;
+
+	@Autowired
+	public DuckService(DuckRepo repo) {
+		this.repo = repo;
+	}
+
+}
