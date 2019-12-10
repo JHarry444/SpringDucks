@@ -15,11 +15,6 @@ public class DuckApp {
 		ApplicationContext ac= SpringApplication.run(DuckApp.class, args);
 		DuckRepo dr = ac.getBean(DuckRepo.class);
 		dr.save(new Duck("Ducktor Who", "blue", "TARDIS"));
-		System.out.println("All: " + dr.findAll());
-		System.out.println("Blue: " + dr.findByColour("blue"));
-		DuckService ds = ac.getBean(DuckService.class);
-		ds.deleteDuck(1L);
-		System.out.println(ds.readDucks());
 	}
 
 }
