@@ -12,7 +12,6 @@ import com.qa.duck.persistence.repo.DuckRepo;
 @Service
 public class DuckService {
 	
-	
 	private DuckRepo repo;
 	
 	@Autowired

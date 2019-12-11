@@ -1,4 +1,4 @@
-package com.qa.duck.service;
+package com.qa.duck.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,21 +8,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.qa.duck.persistence.domain.Duck;
-import com.qa.duck.persistence.repo.DuckRepo;
-import com.qa.duck.rest.DuckController;
 import com.qa.duck.service.DuckService;
 
-@RunWith(SpringRunner.class)
 public class DuckControllerUnitTest {
 
 	@InjectMocks
