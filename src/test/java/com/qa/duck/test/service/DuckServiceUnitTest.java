@@ -1,4 +1,4 @@
-package com.qa.duck.service;
+package com.qa.duck.test.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
+import com.qa.duck.service.DuckService;
 
 @RunWith(SpringRunner.class)
 public class DuckServiceUnitTest {

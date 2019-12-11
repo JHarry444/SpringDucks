@@ -1,4 +1,4 @@
-package com.qa.duck.persistence;
+package com.qa.duck.test.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
