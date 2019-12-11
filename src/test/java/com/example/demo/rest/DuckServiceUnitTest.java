@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,9 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.persistence.domain.Duck;
 import com.example.demo.persistence.repo.DuckRepo;
+import com.example.demo.service.DuckService;
 
 @RunWith(SpringRunner.class)
-public class DuckServiceUnitTests {
+public class DuckServiceUnitTest {
 
 	@InjectMocks
 	private DuckService service;

@@ -36,6 +36,11 @@ public class DuckController {
 	public void deleteDuck(@PathVariable Long id) {
 		this.service.deleteDuck(id);
 	}
+	
+	@GetMapping("/get/{id}")
+	public Duck getDuck(@PathVariable Long id) {
+		return this.service.findDuckByID(id);
+	}
 
 	@GetMapping("/getAll")
 	public List<Duck> getAllDucks() {
