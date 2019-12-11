@@ -1,13 +1,13 @@
-package com.example.demo.service;
+package com.qa.duck.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.exceptions.DuckNotFoundException;
-import com.example.demo.persistence.domain.Duck;
-import com.example.demo.persistence.repo.DuckRepo;
+import com.qa.duck.exceptions.DuckNotFoundException;
+import com.qa.duck.persistence.domain.Duck;
+import com.qa.duck.persistence.repo.DuckRepo;
 
 @Service
 public class DuckService {

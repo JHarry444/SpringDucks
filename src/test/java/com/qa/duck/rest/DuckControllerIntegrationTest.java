@@ -1,4 +1,4 @@
-package com.example.demo.rest;
+package com.qa.duck.rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -23,9 +23,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.demo.persistence.domain.Duck;
-import com.example.demo.service.DuckService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qa.duck.persistence.domain.Duck;
+import com.qa.duck.rest.DuckController;
+import com.qa.duck.service.DuckService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DuckController.class)

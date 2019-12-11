@@ -1,4 +1,4 @@
-package com.example.demo.rest;
+package com.qa.duck.rest;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.persistence.domain.Duck;
-import com.example.demo.service.DuckService;
+import com.qa.duck.persistence.domain.Duck;
+import com.qa.duck.service.DuckService;
 
 @RestController
 public class DuckController {
