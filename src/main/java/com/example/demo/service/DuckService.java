@@ -13,12 +13,23 @@ import com.example.demo.persistence.repo.DuckRepo;
 public class DuckService {
 	
 	
+	private DuckRepo repo;
+	
+	@Autowired
+	public DuckService(DuckRepo repo) {
+		this.repo = repo;
+	}
+	
 	public Duck createDuck(Duck duck) {
 		return this.repo.save(duck);
 	}
 	
-	public List<Duck> readDucks() {
-		return this.repo.findAll();
+	public boolean deleteDuck(Long id) {
+		if (!this.repo.existsById(id)) {
+			throw new DuckNotFoundException();
+		}
+		this.repo.deleteById(id);
+		return this.repo.existsById(id);
 	}
 	
 	public Duck findDuckByID(Long id) {
@@ -26,23 +37,16 @@ public class DuckService {
 				() -> new DuckNotFoundException());
 	}
 	
+	public List<Duck> readDucks() {
+		return this.repo.findAll();
+	}
+
 	public Duck updateDuck(Duck duck, Long id) {
-		Duck toUpdate = this.repo.getOne(id);
+		Duck toUpdate = findDuckByID(id);
 		toUpdate.setName(duck.getName());
 		toUpdate.setColour(duck.getColour());
 		toUpdate.setHabitat(duck.getHabitat());
 		return this.repo.save(toUpdate);
-	}
-	
-	public void deleteDuck(Long id) {
-		this.repo.deleteById(id);
-	}
-	
-	private DuckRepo repo;
-
-	@Autowired
-	public DuckService(DuckRepo repo) {
-		this.repo = repo;
 	}
 
 }

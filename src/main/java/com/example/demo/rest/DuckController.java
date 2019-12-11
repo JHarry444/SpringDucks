@@ -26,25 +26,25 @@ public class DuckController {
 		super();
 		this.service = service;
 	}
-	
-	@DeleteMapping("/deleteDuck/{id}")
-	public void deleteDuck(@PathVariable Long id) {
-		this.service.deleteDuck(id);
-	}
-	
-	@PutMapping("/updateDuck")
-	public Duck updateDuck(@PathParam("id") Long id, @RequestBody Duck duck) {
-		return this.service.updateDuck(duck, id);
-	}
 
 	@PostMapping("/createDuck")
 	public Duck createDuck(@RequestBody Duck duck) {
 		return this.service.createDuck(duck);
 	}
 
+	@DeleteMapping("/deleteDuck/{id}")
+	public void deleteDuck(@PathVariable Long id) {
+		this.service.deleteDuck(id);
+	}
+
 	@GetMapping("/getAll")
-	public List<Duck> getAll() {
+	public List<Duck> getAllDucks() {
 		return this.service.readDucks();
+	}
+
+	@PutMapping("/updateDuck")
+	public Duck updateDuck(@PathParam("id") Long id, @RequestBody Duck duck) {
+		return this.service.updateDuck(duck, id);
 	}
 
 }
