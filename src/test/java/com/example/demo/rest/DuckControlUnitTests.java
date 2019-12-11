@@ -33,7 +33,7 @@ public class DuckControlUnitTests {
 			.when(this.service.readDucks())
 			.thenReturn(pond);
 		
-		assertEquals(false, this.controller.getAll().isEmpty());
+		assertEquals(false, this.controller.getAll().isEmpty(), "Controller has found no ducks");
 		
 		Mockito.verify(service, times(1)).readDucks();
 	}
