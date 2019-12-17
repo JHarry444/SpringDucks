@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContext;
 
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
-import com.qa.duck.service.DuckService;
 
 @SpringBootApplication
 public class DuckApp {

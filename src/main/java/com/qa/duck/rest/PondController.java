@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qa.duck.persistence.domain.Duck;
-import com.qa.duck.service.DuckService;
+import com.qa.duck.persistence.domain.Pond;
+import com.qa.duck.service.PondService;
 
 @RestController
-@RequestMapping("/duck")
-public class DuckController {
+@RequestMapping("/pond")
+public class PondController {
 
-	private DuckService service;
+	private PondService service;
 
 	@Autowired
-	public DuckController(DuckService service) {
+	public PondController(PondService service) {
 		super();
 		this.service = service;
 	}
 
-	@PostMapping("/createDuck")
-	public Duck createDuck(@RequestBody Duck duck) {
-		return this.service.createDuck(duck);
+	@PostMapping("/createPond")
+	public Pond createPond(@RequestBody Pond duck) {
+		return this.service.createPond(duck);
 	}
 
-	@DeleteMapping("/deleteDuck/{id}")
-	public void deleteDuck(@PathVariable Long id) {
-		this.service.deleteDuck(id);
+	@DeleteMapping("/deletePond/{id}")
+	public void deletePond(@PathVariable Long id) {
+		this.service.deletePond(id);
 	}
 	
 	@GetMapping("/get/{id}")
-	public Duck getDuck(@PathVariable Long id) {
-		return this.service.findDuckByID(id);
+	public Pond getPond(@PathVariable Long id) {
+		return this.service.findPondByID(id);
 	}
 
 	@GetMapping("/getAll")
-	public List<Duck> getAllDucks() {
-		return this.service.readDucks();
+	public List<Pond> getAllPonds() {
+		return this.service.readPonds();
 	}
 
-	@PutMapping("/updateDuck")
-	public Duck updateDuck(@PathParam("id") Long id, @RequestBody Duck duck) {
-		return this.service.updateDuck(duck, id);
+	@PutMapping("/updatePond")
+	public Pond updatePond(@PathParam("id") Long id, @RequestBody Pond duck) {
+		return this.service.updatePond(duck, id);
 	}
 
 }
