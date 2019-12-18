@@ -5,9 +5,9 @@ import java.util.List;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.domain.Pond;
 import com.qa.duck.service.PondService;
 
@@ -51,8 +52,27 @@ public class PondController {
 	}
 
 	@PutMapping("/updatePond")
-	public Pond updatePond(@PathParam("id") Long id, @RequestBody Pond duck) {
-		return this.service.updatePond(duck, id);
+	public Pond updatePond(@PathParam("id") Long id, @RequestBody Pond pond) {
+		return this.service.updatePond(pond, id);
 	}
+	
+	@PatchMapping("/update/{id}")
+	public Pond addDuckToPond(@PathVariable Long id, @RequestBody Duck duck) {
+		return this.service.addDuckToPond(id, duck);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

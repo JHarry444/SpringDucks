@@ -53,7 +53,7 @@ public class DuckControllerIntegrationTest {
 	@Test
 	public void testCreateDuck() throws Exception {
 		String result = this.mock
-				.perform(request(HttpMethod.POST, "/createDuck").contentType(MediaType.APPLICATION_JSON)
+				.perform(request(HttpMethod.POST, "/duck/createDuck").contentType(MediaType.APPLICATION_JSON)
 						.content(this.mapper.writeValueAsString(testDuck)).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		assertEquals(this.mapper.writeValueAsString(testDuckWithID), result);
@@ -61,7 +61,7 @@ public class DuckControllerIntegrationTest {
 
 	@Test
 	public void testDeleteDuck() throws Exception {
-		this.mock.perform(request(HttpMethod.DELETE, "/deleteDuck/" + this.id)).andExpect(status().isOk());
+		this.mock.perform(request(HttpMethod.DELETE, "/duck/deleteDuck/" + this.id)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class DuckControllerIntegrationTest {
 		List<Duck> duckList = new ArrayList<>();
 		duckList.add(this.testDuckWithID);
 
-		String content = this.mock.perform(request(HttpMethod.GET, "/getAll").accept(MediaType.APPLICATION_JSON))
+		String content = this.mock.perform(request(HttpMethod.GET, "/duck/getAll").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertEquals(this.mapper.writeValueAsString(duckList), content);
@@ -82,7 +82,7 @@ public class DuckControllerIntegrationTest {
 		updatedDuck.setId(this.id);
 
 		String result = this.mock
-				.perform(request(HttpMethod.PUT, "/updateDuck/?id=" + this.id).accept(MediaType.APPLICATION_JSON)
+				.perform(request(HttpMethod.PUT, "/duck/updateDuck/?id=" + this.id).accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON).content(this.mapper.writeValueAsString(newDuck)))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
