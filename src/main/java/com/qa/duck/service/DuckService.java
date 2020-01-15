@@ -11,18 +11,18 @@ import com.qa.duck.persistence.repo.DuckRepo;
 
 @Service
 public class DuckService {
-	
+
 	private DuckRepo repo;
-	
+
 	@Autowired
 	public DuckService(DuckRepo repo) {
 		this.repo = repo;
 	}
-	
+
 	public Duck createDuck(Duck duck) {
 		return this.repo.save(duck);
 	}
-	
+
 	public boolean deleteDuck(Long id) {
 		if (!this.repo.existsById(id)) {
 			throw new DuckNotFoundException();
@@ -30,12 +30,11 @@ public class DuckService {
 		this.repo.deleteById(id);
 		return this.repo.existsById(id);
 	}
-	
+
 	public Duck findDuckByID(Long id) {
-		return this.repo.findById(id).orElseThrow(
-				() -> new DuckNotFoundException());
+		return this.repo.findById(id).orElseThrow(DuckNotFoundException::new);
 	}
-	
+
 	public List<Duck> readDucks() {
 		return this.repo.findAll();
 	}
