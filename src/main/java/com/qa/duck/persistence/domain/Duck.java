@@ -61,23 +61,7 @@ public class Duck {
 	public void setHabitat(String habitat) {
 		this.habitat = habitat;
 	}
-
-	@Override
-	public String toString() {
-		return "Duck [id=" + id + ", name=" + name + ", colour=" + colour + ", habitat=" + habitat + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((colour == null) ? 0 : colour.hashCode());
-		result = prime * result + ((habitat == null) ? 0 : habitat.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

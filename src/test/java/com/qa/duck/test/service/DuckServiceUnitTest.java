@@ -38,14 +38,7 @@ public class DuckServiceUnitTest {
 
 	final long id = 1L;
 	
-	@Before
-	public void init() {
-		this.duckList = new ArrayList<>();
-		this.duckList.add(testDuck);
-		this.testDuck = new Duck("Ducktor Doom", "Grey", "Latveria");
-		this.testDuckWithID = new Duck(testDuck.getName(), testDuck.getColour(), testDuck.getHabitat());
-		this.testDuckWithID.setId(id);
-	}
+
 
 	@Test
 	public void createDuckTest() {
@@ -89,10 +82,13 @@ public class DuckServiceUnitTest {
 	public void updateDucksTest() {
 		// given
 		Duck newDuck = new Duck("Sir Duckington esq.", "Blue", "Duckington Manor");
-		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
+		
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testDuckWithID));
+
+		Duck updatedDuck = new Duck(newDuck.getName(), 
+										newDuck.getColour(), newDuck.getHabitat());
 		updatedDuck.setId(this.id);
 
-		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testDuckWithID));
 		// You NEED to configure a .equals() method in Duck.java for this to work
 		when(this.repo.save(updatedDuck)).thenReturn(updatedDuck);
 
@@ -100,6 +96,15 @@ public class DuckServiceUnitTest {
 
 		verify(this.repo, times(1)).findById(1L);
 		verify(this.repo, times(1)).save(updatedDuck);
+	}
+	
+	@Before
+	public void init() {
+		this.duckList = new ArrayList<>();
+		this.duckList.add(testDuck);
+		this.testDuck = new Duck("Ducktor Doom", "Grey", "Latveria");
+		this.testDuckWithID = new Duck(testDuck.getName(), testDuck.getColour(), testDuck.getHabitat());
+		this.testDuckWithID.setId(id);
 	}
 
 }
