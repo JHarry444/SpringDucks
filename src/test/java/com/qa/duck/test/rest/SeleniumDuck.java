@@ -38,7 +38,7 @@ public class SeleniumDuck {
 	@Test
 	public void testy() throws InterruptedException {
 		this.driver.get("localhost:" + port);
-		assertEquals("Default value is not zero", "0", this.driver.findElement(By.xpath("//*[@id=\"root\"]/div/p")).getText());
+		assertEquals("Bloop", "bloop", this.driver.findElement(By.id("fuck")).getText());
 	}
 	
 	@After

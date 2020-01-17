@@ -1,6 +1,5 @@
 package com.qa.duck.persistence.domain;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -21,12 +20,6 @@ public class Pond {
 	private List<Duck> ducks;
 
 	public Pond() {
-	}
-
-	public Pond(String name, Duck... ducks) {
-		super();
-		this.name = name;
-		this.ducks = Arrays.asList(ducks);
 	}
 
 	public Long getId() {
