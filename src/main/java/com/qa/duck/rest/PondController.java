@@ -32,8 +32,8 @@ public class PondController {
 	}
 
 	@PostMapping("/createPond")
-	public Pond createPond(@RequestBody Pond duck) {
-		return this.service.createPond(duck);
+	public Pond createPond(@RequestBody Pond pond) {
+		return this.service.createPond(pond);
 	}
 
 	@DeleteMapping("/deletePond/{id}")
@@ -57,8 +57,8 @@ public class PondController {
 	}
 	
 	@PatchMapping("/update/{id}")
-	public Pond addDuckToPond(@PathVariable Long id, @RequestBody Duck duck) {
-		return this.service.addDuckToPond(id, duck);
+	public Pond addDuckToPond(@PathVariable Long id, @RequestBody Duck pond) {
+		return this.service.addDuckToPond(id, pond);
 	}
 	
 	
