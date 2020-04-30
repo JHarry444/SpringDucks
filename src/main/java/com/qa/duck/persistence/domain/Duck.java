@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Duck {
@@ -19,6 +19,11 @@ public class Duck {
 	private String colour;
 
 	private String habitat;
+	
+	@ManyToOne(targetEntity = Pond.class)
+	private Pond pond;
+
+
 
 	public Duck(String name, String colour, String habitat) {
 		super();
@@ -60,6 +65,14 @@ public class Duck {
 
 	public void setHabitat(String habitat) {
 		this.habitat = habitat;
+	}
+	
+	public Pond getPond() {
+		return pond;
+	}
+
+	public void setPond(Pond pond) {
+		this.pond = pond;
 	}
 	
 	@Override

@@ -16,7 +16,7 @@ public class Pond {
 
 	private String name;
 
-	@OneToMany
+	@OneToMany(mappedBy = "pond")
 	private List<Duck> ducks;
 
 	public Pond() {
