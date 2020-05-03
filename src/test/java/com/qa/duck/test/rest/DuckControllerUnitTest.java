@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import com.qa.duck.dto.DuckDTO;
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.rest.DuckController;
 import com.qa.duck.service.DuckService;
@@ -35,23 +39,34 @@ public class DuckControllerUnitTest {
 	private Duck testDuck;
 
 	private Duck testDuckWithID;
+	
+	private DuckDTO duckDTO;
 
 	final long id = 1L;
+	
+	private ModelMapper mapper = new ModelMapper();
+	
+
+	private DuckDTO mapToDTO(Duck duck) {
+		return this.mapper.map(duck, DuckDTO.class);
+	}
+	
 	
 	@Before
 	public void init() {
 		this.duckList = new ArrayList<>();
-		this.duckList.add(testDuck);
 		this.testDuck = new Duck("Ducktor Doom", "Grey", "Latveria");
+		this.duckList.add(testDuck);
 		this.testDuckWithID = new Duck(testDuck.getName(), testDuck.getColour(), testDuck.getHabitat());
 		this.testDuckWithID.setId(id);
+		this.duckDTO = this.mapToDTO(testDuckWithID);
 	}
 
 	@Test
 	public void createDuckTest() {
-		when(this.service.createDuck(testDuck)).thenReturn(testDuckWithID);
+		when(this.service.createDuck(testDuck)).thenReturn(this.duckDTO);
 
-		assertEquals(this.testDuckWithID, this.controller.createDuck(testDuck));
+		assertEquals(new ResponseEntity<DuckDTO>(this.duckDTO, HttpStatus.CREATED), this.controller.createDuck(testDuck));
 
 		verify(this.service, times(1)).createDuck(this.testDuck);
 	}
@@ -65,9 +80,9 @@ public class DuckControllerUnitTest {
 
 	@Test
 	public void findDuckByIDTest() {
-		when(this.service.findDuckByID(this.id)).thenReturn(this.testDuckWithID);
+		when(this.service.findDuckByID(this.id)).thenReturn(this.duckDTO);
 
-		assertEquals(this.testDuckWithID, this.controller.getDuck(this.id));
+		assertEquals(new ResponseEntity<DuckDTO>(this.duckDTO, HttpStatus.OK), this.controller.getDuck(this.id));
 
 		verify(this.service, times(1)).findDuckByID(this.id);
 	}
@@ -75,9 +90,9 @@ public class DuckControllerUnitTest {
 	@Test
 	public void getAllDucksTest() {
 
-		when(service.readDucks()).thenReturn(this.duckList);
+		when(service.readDucks()).thenReturn(this.duckList.stream().map(this::mapToDTO).collect(Collectors.toList()));
 
-		assertFalse("Controller has found no ducks", this.controller.getAllDucks().isEmpty());
+		assertFalse("Controller has found no ducks", this.controller.getAllDucks().getBody().isEmpty());
 
 		verify(service, times(1)).readDucks();
 	}
@@ -89,9 +104,9 @@ public class DuckControllerUnitTest {
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
 		updatedDuck.setId(this.id);
 
-		when(this.service.updateDuck(newDuck, this.id)).thenReturn(updatedDuck);
+		when(this.service.updateDuck(newDuck, this.id)).thenReturn(this.mapToDTO(updatedDuck));
 
-		assertEquals(updatedDuck, this.controller.updateDuck(this.id, newDuck));
+		assertEquals(new ResponseEntity<DuckDTO>(this.mapToDTO(updatedDuck), HttpStatus.ACCEPTED), this.controller.updateDuck(this.id, newDuck));
 
 		verify(this.service, times(1)).updateDuck(newDuck, this.id);
 	}

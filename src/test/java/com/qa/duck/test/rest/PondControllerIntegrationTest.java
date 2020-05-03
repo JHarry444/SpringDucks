@@ -54,23 +54,24 @@ public class PondControllerIntegrationTest {
 		String result = this.mock
 				.perform(request(HttpMethod.POST, "/pond/createPond").contentType(MediaType.APPLICATION_JSON)
 						.content(this.mapper.writeValueAsString(testPond)).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+				.andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 		assertEquals(this.mapper.writeValueAsString(testPondWithID), result);
 	}
 
 	@Test
 	public void testDeletePond() throws Exception {
-		this.mock.perform(request(HttpMethod.DELETE, "/pond/deletePond/" + this.id)).andExpect(status().isOk());
+		this.mock.perform(request(HttpMethod.DELETE, "/pond/deletePond/" + this.id)).andExpect(status().isNoContent());
 	}
 
 	@Test
 	public void testGetPond() throws Exception {
-		String content = this.mock.perform(request(HttpMethod.GET, "/pond/get/" + this.id).accept(MediaType.APPLICATION_JSON))
+		String content = this.mock
+				.perform(request(HttpMethod.GET, "/pond/get/" + this.id).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertEquals(this.mapper.writeValueAsString(this.testPond), content);
 	}
-	
+
 	@Test
 	public void testGetAllPonds() throws Exception {
 		List<Pond> pondList = new ArrayList<>();
@@ -91,8 +92,8 @@ public class PondControllerIntegrationTest {
 		String result = this.mock
 				.perform(request(HttpMethod.PUT, "/pond/updatePond/?id=" + this.id).accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON).content(this.mapper.writeValueAsString(newPond)))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		
+				.andExpect(status().isAccepted()).andReturn().getResponse().getContentAsString();
+
 		assertEquals(this.mapper.writeValueAsString(updatedPond), result);
 	}
 

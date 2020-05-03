@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qa.duck.dto.DuckDTO;
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
 
@@ -33,6 +35,9 @@ public class DuckControllerIntegrationTest {
 	@Autowired
 	private DuckRepo repo;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private long id;
@@ -41,13 +46,19 @@ public class DuckControllerIntegrationTest {
 
 	private Duck testDuckWithID;
 
+	private DuckDTO duckDTO;
+	
+	private DuckDTO mapToDTO(Duck duck) {
+		return this.modelMapper.map(duck, DuckDTO.class);
+	}
+
 	@Before
 	public void init() {
 		this.repo.deleteAll();
-
 		this.testDuck = new Duck("Barry", "blue", "pub");
 		this.testDuckWithID = this.repo.save(this.testDuck);
 		this.id = this.testDuckWithID.getId();
+		this.duckDTO = this.mapToDTO(testDuckWithID);
 	}
 
 	@Test
@@ -55,19 +66,19 @@ public class DuckControllerIntegrationTest {
 		String result = this.mock
 				.perform(request(HttpMethod.POST, "/duck/createDuck").contentType(MediaType.APPLICATION_JSON)
 						.content(this.mapper.writeValueAsString(testDuck)).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		assertEquals(this.mapper.writeValueAsString(testDuckWithID), result);
+				.andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+		assertEquals(this.mapper.writeValueAsString(duckDTO), result);
 	}
 
 	@Test
 	public void testDeleteDuck() throws Exception {
-		this.mock.perform(request(HttpMethod.DELETE, "/duck/deleteDuck/" + this.id)).andExpect(status().isOk());
+		this.mock.perform(request(HttpMethod.DELETE, "/duck/deleteDuck/" + this.id)).andExpect(status().isNoContent());
 	}
 
 	@Test
 	public void testGetAllDucks() throws Exception {
-		List<Duck> duckList = new ArrayList<>();
-		duckList.add(this.testDuckWithID);
+		List<DuckDTO> duckList = new ArrayList<>();
+		duckList.add(this.duckDTO);
 
 		String content = this.mock.perform(request(HttpMethod.GET, "/duck/getAll").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
@@ -84,9 +95,9 @@ public class DuckControllerIntegrationTest {
 		String result = this.mock
 				.perform(request(HttpMethod.PUT, "/duck/updateDuck/?id=" + this.id).accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON).content(this.mapper.writeValueAsString(newDuck)))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		
-		assertEquals(this.mapper.writeValueAsString(updatedDuck), result);
+				.andExpect(status().isAccepted()).andReturn().getResponse().getContentAsString();
+
+		assertEquals(this.mapper.writeValueAsString(this.mapToDTO(updatedDuck)), result);
 	}
 
 }

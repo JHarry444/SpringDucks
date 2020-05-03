@@ -3,14 +3,18 @@ package com.qa.duck.test.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.assertj.core.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.qa.duck.dto.DuckDTO;
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
 import com.qa.duck.service.DuckService;
@@ -28,6 +32,13 @@ public class DuckServiceIntegrationTest {
 	private Duck testDuck;
 
 	private Duck testDuckWithID;
+	
+	@Autowired
+	private ModelMapper mapper;
+	
+	private DuckDTO mapToDTO(Duck duck) {
+		return this.mapper.map(duck, DuckDTO.class);
+	}
 
 	@Before
 	public void init() {
@@ -40,7 +51,7 @@ public class DuckServiceIntegrationTest {
 	
 	@Test
 	public void testCreateDuck() {
-		assertEquals(this.testDuckWithID, this.service.createDuck(testDuck));
+		assertEquals(this.mapToDTO(this.testDuckWithID), this.service.createDuck(testDuck));
 	}
 
 	@Test
@@ -50,12 +61,12 @@ public class DuckServiceIntegrationTest {
 
 	@Test
 	public void testFindDuckByID() {
-		assertThat(this.service.findDuckByID(this.testDuckWithID.getId())).isEqualTo(this.testDuckWithID);
+		assertThat(this.service.findDuckByID(this.testDuckWithID.getId())).isEqualTo(this.mapToDTO(this.testDuckWithID));
 	}
 
 	@Test
 	public void testReadDucks() {
-		assertThat(this.service.readDucks()).isEqualTo(Arrays.asList(new Duck[] { this.testDuckWithID }));
+		assertThat(this.service.readDucks()).isEqualTo(Stream.of(this.mapToDTO(testDuckWithID)).collect(Collectors.toList()));
 	}
 
 	@Test
@@ -64,7 +75,7 @@ public class DuckServiceIntegrationTest {
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
 		updatedDuck.setId(this.testDuckWithID.getId());
 
-		assertThat(this.service.updateDuck(newDuck, this.testDuckWithID.getId())).isEqualTo(updatedDuck);
+		assertThat(this.service.updateDuck(newDuck, this.testDuckWithID.getId())).isEqualTo(this.mapToDTO(updatedDuck));
 	}
 
 }
