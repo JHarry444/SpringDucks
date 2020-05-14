@@ -61,8 +61,8 @@ public class PondController {
 	}
 
 	@PatchMapping("/update/{id}")
-	public ResponseEntity<PondDTO> addDuckToPond(@PathVariable Long id, @RequestBody Duck pond) {
-		return new ResponseEntity<PondDTO>(this.service.addDuckToPond(id, pond), HttpStatus.ACCEPTED);
+	public ResponseEntity<PondDTO> addDuckToPond(@PathVariable Long id, @RequestBody Duck duck) {
+		return new ResponseEntity<PondDTO>(this.service.addDuckToPond(id, duck), HttpStatus.ACCEPTED);
 	}
 
 }

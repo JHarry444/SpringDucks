@@ -11,6 +11,7 @@ import com.qa.duck.dto.DuckDTO;
 import com.qa.duck.exceptions.DuckNotFoundException;
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
+import com.qa.duck.utils.MyBeanUtils;
 
 @Service
 public class DuckService {
@@ -51,9 +52,7 @@ public class DuckService {
 
 	public DuckDTO updateDuck(Duck duck, Long id) {
 		Duck toUpdate = this.repo.findById(id).orElseThrow(DuckNotFoundException::new);
-		toUpdate.setName(duck.getName());
-		toUpdate.setColour(duck.getColour());
-		toUpdate.setHabitat(duck.getHabitat());
+		MyBeanUtils.mergeNotNull(duck, toUpdate);
 		return this.mapToDTO(this.repo.save(toUpdate));
 	}
 
