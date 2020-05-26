@@ -14,10 +14,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.duck.dto.DuckDTO;
@@ -25,7 +30,7 @@ import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class DuckControllerIntegrationTest {
 
@@ -38,7 +43,8 @@ public class DuckControllerIntegrationTest {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	private ObjectMapper mapper;
 
 	private long id;
 
@@ -47,7 +53,7 @@ public class DuckControllerIntegrationTest {
 	private Duck testDuckWithID;
 
 	private DuckDTO duckDTO;
-	
+
 	private DuckDTO mapToDTO(Duck duck) {
 		return this.modelMapper.map(duck, DuckDTO.class);
 	}
@@ -63,11 +69,16 @@ public class DuckControllerIntegrationTest {
 
 	@Test
 	public void testCreateDuck() throws Exception {
-		String result = this.mock
-				.perform(request(HttpMethod.POST, "/duck/createDuck").contentType(MediaType.APPLICATION_JSON)
-						.content(this.mapper.writeValueAsString(testDuck)).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
-		assertEquals(this.mapper.writeValueAsString(duckDTO), result);
+		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/duck/createDuck");
+		mockRequest.contentType(MediaType.APPLICATION_JSON);
+		mockRequest.content(this.mapper.writeValueAsString(testDuck));
+		mockRequest.accept(MediaType.APPLICATION_JSON);
+
+		ResultMatcher matchStatus = MockMvcResultMatchers.status().isCreated();
+		ResultMatcher matchContent = MockMvcResultMatchers.content().json(this.mapper.writeValueAsString(duckDTO));
+		this.mock.perform(mockRequest)
+				.andExpect(matchStatus).andExpect(matchContent);
+		
 	}
 
 	@Test

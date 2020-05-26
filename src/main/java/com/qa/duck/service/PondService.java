@@ -21,21 +21,18 @@ public class PondService {
 
 	private DuckRepo duckRepo;
 
-	private ModelMapper mapper;
+	private Mapper<Pond, PondDTO> mapper;
 
 	@Autowired
 	public PondService(PondRepo repo, DuckRepo duckRepo, ModelMapper mapper) {
 		this.repo = repo;
 		this.duckRepo = duckRepo;
-		this.mapper = mapper;
+		this.mapper = (Pond pond) -> mapper.map(pond, PondDTO.class);
 	}
 
-	public PondDTO mapToDTO(Pond pond) {
-		return this.mapper.map(pond, PondDTO.class);
-	}
 
 	public PondDTO createPond(Pond pond) {
-		return this.mapToDTO(this.repo.save(pond));
+		return this.mapper.mapToDTO(this.repo.save(pond));
 	}
 
 	public boolean deletePond(Long id) {
@@ -47,24 +44,24 @@ public class PondService {
 	}
 
 	public PondDTO findPondByID(Long id) {
-		return this.mapToDTO(this.repo.findById(id).orElseThrow(() -> new PondNotFoundException()));
+		return this.mapper.mapToDTO(this.repo.findById(id).orElseThrow(() -> new PondNotFoundException()));
 	}
 
 	public List<PondDTO> readPonds() {
-		return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+		return this.repo.findAll().stream().map(this.mapper::mapToDTO).collect(Collectors.toList());
 	}
 
 	public PondDTO updatePond(Pond duck, Long id) {
 		Pond toUpdate = this.repo.findById(id).orElseThrow(() -> new PondNotFoundException());
 		toUpdate.setName(duck.getName());
-		return this.mapToDTO(this.repo.save(toUpdate));
+		return this.mapper.mapToDTO(this.repo.save(toUpdate));
 	}
 
 	public PondDTO addDuckToPond(Long id, Duck duck) {
 		Pond toUpdate = this.repo.findById(id).orElseThrow(() -> new PondNotFoundException());
 		Duck newDuck = this.duckRepo.save(duck);
-		toUpdate.getDucks().add(duck);
-		return this.mapToDTO(this.repo.saveAndFlush(toUpdate));
+		toUpdate.getDucks().add(newDuck);
+		return this.mapper.mapToDTO(this.repo.saveAndFlush(toUpdate));
 	}
 
 }
