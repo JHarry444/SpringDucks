@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -30,7 +31,10 @@ public class HomeTest {
 	@Before
 	public void init() {
 		System.setProperty("webdriver.chrome.driver", "chromedriver");
-		this.driver = new ChromeDriver();
+		ChromeOptions opts = new ChromeOptions();
+		opts.setHeadless(true);
+		this.driver = new ChromeDriver(opts);
+//		this.driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 	}
 
 	@After
@@ -40,12 +44,12 @@ public class HomeTest {
 
 	@Test
 	public void testCreate() {
+		driver.manage().window().maximize();
 		driver.get("http://localhost:" + port);
 		HomePage home = PageFactory.initElements(driver, HomePage.class);
-		home.getCreateName().sendKeys("Donald");
-		home.getCreateColour().sendKeys("White");
-		home.getCreateHabitat().sendKeys("Disney World");
-		home.getCreateButton().click();
+
+		home.createDuck("Donald", "White", "Disney World");
+
 		WebDriverWait wait = new WebDriverWait(driver, 2);
 		wait.until(ExpectedConditions.textToBePresentInElement(home.getCreateOutput(), "name"));
 		assertFalse(home.getCreateOutput().getText().isBlank());

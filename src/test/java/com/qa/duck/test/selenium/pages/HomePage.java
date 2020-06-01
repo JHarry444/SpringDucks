@@ -35,6 +35,13 @@ public class HomePage {
 	@FindBy(id = "deleteOuput")
 	private WebElement deleteOutput;
 
+	public void createDuck(String name, String colour, String habitat) {
+		this.createName.sendKeys(name);
+		this.createColour.sendKeys(colour);
+		this.createHabitat.sendKeys(habitat);
+		this.createButton.click();
+	}
+
 	public WebElement getCreateName() {
 		return createName;
 	}
