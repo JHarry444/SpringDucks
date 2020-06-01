@@ -1,6 +1,40 @@
 <html>
 
-<body>
-	<p id="Duck">bloop</p>
-</body>
+	<head>
+		<link rel="stylesheet" href="index.css"/>
+	</head>
+
+	<body>
+		<h1>Penguins > Ducks > Everything else</h1>
+
+		<div id="create">
+			<h2>Create</h2>
+			<label for="createName">Name: </label>
+			<input id="createName" name="name"/>
+			<label for="createColour">Colour: </label>
+			<input id="createColour" name="colour"/>
+			<label for="createHabitat">Habitat: </label>
+			<input id="createHabitat" name="habitat"/>
+			<button type="button" id="createButton">CREATE</button>
+			<pre id="createOutput"></pre>
+		</div>
+		<div id="read">
+			<h2>Read</h2>
+			<button type="button" id="readButton">READ</button>
+			<pre id="readOutput"></pre>
+		</div>
+		<div id="update">
+			<h2>Update</h2>
+			<p><strong>COMING SOON</strong></p>
+		</div>
+		<div id="delete">
+			<h2>Delete</h2>
+			<label for="deleteInput">ID: </label>
+			<input id="deleteInput" /><button type="button" id="deleteButton">DELETE</button>
+			<pre id="deleteOutput" id="deleteButton"></pre>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+		<script src="index.js"></script>
+	</body>
+
 </html>
