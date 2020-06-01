@@ -12,7 +12,6 @@
             ).catch(err => console.error(err));
     });
 
-
     document.getElementById('readButton').addEventListener('click', function () {
         axios.get('/duck/getAll')
             .then(res =>
