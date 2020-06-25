@@ -62,8 +62,8 @@ public class HomePage {
 		return createOutput;
 	}
 
-	public WebElement getReadButton() {
-		return readButton;
+	public void readDucks() {
+		this.readButton.click();
 	}
 
 	public WebElement getReadOutput() {
