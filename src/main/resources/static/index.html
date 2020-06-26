@@ -1,7 +1,7 @@
 <html>
 
 	<head>
-		<link rel="stylesheet" href="index.css"/>
+		<link rel="stylesheet" href="index.css" />
 	</head>
 
 	<body>
@@ -9,13 +9,15 @@
 
 		<div id="create">
 			<h2>Create</h2>
-			<label for="createName">Name: </label>
-			<input id="createName" name="name"/>
-			<label for="createColour">Colour: </label>
-			<input id="createColour" name="colour"/>
-			<label for="createHabitat">Habitat: </label>
-			<input id="createHabitat" name="habitat"/>
-			<button type="button" id="createButton">CREATE</button>
+			<form id="createForm">
+				<label for="createName">Name: </label>
+				<input id="createName" name="name" />
+				<label for="createColour">Colour: </label>
+				<input id="createColour" name="colour" />
+				<label for="createHabitat">Habitat: </label>
+				<input id="createHabitat" name="habitat" />
+				<button type="submit" id="createButton">CREATE</button>
+			</form>
 			<pre id="createOutput"></pre>
 		</div>
 		<div id="read">
@@ -25,7 +27,18 @@
 		</div>
 		<div id="update">
 			<h2>Update</h2>
-			<p><strong>PIERS IS A WEAPON</strong></p>
+			<form id="updateForm">
+				<label for="updateID">ID: </label>
+				<input id="updateID" name="id" />
+				<label for="updateName">Name: </label>
+				<input id="updateName" name="name" />
+				<label for="updateColour">Colour: </label>
+				<input id="updateColour" name="colour" />
+				<label for="updateHabitat">Habitat: </label>
+				<input id="updateHabitat" name="habitat" />
+				<button type="submit" id="updateButton">UPDATE</button>
+			</form>
+			<pre id="updateOutput"></pre>
 		</div>
 		<div id="delete">
 			<h2>Delete</h2>

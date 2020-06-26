@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qa.duck.dto.PondDTO;
+import com.qa.duck.exceptions.DuckNotFoundException;
 import com.qa.duck.exceptions.PondNotFoundException;
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.domain.Pond;
@@ -32,7 +33,14 @@ public class PondService {
 
 
 	public PondDTO createPond(Pond pond) {
-		return this.mapper.mapToDTO(this.repo.save(pond));
+		Pond saved = this.repo.save(pond);
+		pond.getDucks().stream()
+		.map(duck -> this.duckRepo.findById(duck.getId()).orElseThrow(DuckNotFoundException::new))
+		.forEach(duck -> {
+			duck.setPond(saved);
+			this.duckRepo.save(duck);
+		});
+		return this.mapper.mapToDTO(saved);
 	}
 
 	public boolean deletePond(Long id) {

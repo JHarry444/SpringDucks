@@ -1,5 +1,6 @@
-body > div > input {
+form > input {
     display: block;
+    margin-bottom: 1em;
 }
 
 body > div {
