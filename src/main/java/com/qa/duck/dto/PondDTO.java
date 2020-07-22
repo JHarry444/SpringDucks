@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class PondDTO {
+public final class PondDTO {
 
 	private Long id;
 

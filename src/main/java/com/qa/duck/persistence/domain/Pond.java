@@ -11,20 +11,18 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Pond {
 
 	@Id
 	@GeneratedValue
+	@EqualsAndHashCode.Exclude
 	private Long id;
 
 	private String name;

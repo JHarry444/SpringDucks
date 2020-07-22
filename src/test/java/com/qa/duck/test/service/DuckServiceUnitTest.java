@@ -41,11 +41,7 @@ class DuckServiceUnitTest {
 
 	private DuckDTO duckDTO;
 
-	final long id = 1L;
-
-	private DuckDTO mapToDTO(Duck duck) {
-		return this.mapper.map(duck, DuckDTO.class);
-	}
+	private final long ID = 1L;
 
 	@BeforeEach
 	void init() {
@@ -53,39 +49,41 @@ class DuckServiceUnitTest {
 		this.duckList.add(testDuck);
 		this.testDuck = new Duck("Ducktor Doom", "Grey", "Latveria");
 		this.testDuckWithID = new Duck(testDuck.getName(), testDuck.getColour(), testDuck.getHabitat());
-		this.testDuckWithID.setId(id);
+		this.testDuckWithID.setId(ID);
 		this.duckDTO = new ModelMapper().map(testDuckWithID, DuckDTO.class);
 	}
 
 	@Test
 	void createDuckTest() {
-		when(this.mapper.map(mapToDTO(testDuck), Duck.class)).thenReturn(testDuck);
+		DuckDTO newDuckDTO = new DuckDTO(null, "Ducktor Doom", "Grey", "Latveria");
+
+		when(this.mapper.map(newDuckDTO, Duck.class)).thenReturn(testDuck);
 		when(this.repo.save(testDuck)).thenReturn(testDuckWithID);
 		when(this.mapper.map(testDuckWithID, DuckDTO.class)).thenReturn(duckDTO);
 
-		assertThat(this.duckDTO).isEqualTo(this.service.createDuck(mapToDTO(testDuck)));
+		assertThat(this.duckDTO).isEqualTo(this.service.createDuck(newDuckDTO));
 
 		verify(this.repo, times(1)).save(this.testDuck);
 	}
 
 	@Test
 	void deleteDuckTest() {
-		when(this.repo.existsById(id)).thenReturn(true, false);
+		when(this.repo.existsById(ID)).thenReturn(true, false);
 
-		assertThat(this.service.deleteDuck(id)).isTrue();
+		assertThat(this.service.deleteDuck(ID)).isTrue();
 
-		verify(this.repo, times(1)).deleteById(id);
-		verify(this.repo, times(2)).existsById(id);
+		verify(this.repo, times(1)).deleteById(ID);
+		verify(this.repo, times(2)).existsById(ID);
 	}
 
 	@Test
 	void findDuckByIDTest() {
-		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testDuckWithID));
+		when(this.repo.findById(this.ID)).thenReturn(Optional.of(this.testDuckWithID));
 		when(this.mapper.map(testDuckWithID, DuckDTO.class)).thenReturn(duckDTO);
 
-		assertThat(this.duckDTO).isEqualTo(this.service.findDuckByID(this.id));
+		assertThat(this.duckDTO).isEqualTo(this.service.findDuckByID(this.ID));
 
-		verify(this.repo, times(1)).findById(this.id);
+		verify(this.repo, times(1)).findById(this.ID);
 	}
 
 	@Test
@@ -110,12 +108,12 @@ class DuckServiceUnitTest {
 		updatedDuck.setId(ID);
 		DuckDTO updatedDTO = new DuckDTO(ID, updatedDuck.getName(), updatedDuck.getColour(), updatedDuck.getHabitat());
 
-		when(this.repo.findById(this.id)).thenReturn(Optional.of(duck));
+		when(this.repo.findById(this.ID)).thenReturn(Optional.of(duck));
 		// You NEED to configure a .equals() method in Duck.java for this to work
 		when(this.repo.save(updatedDuck)).thenReturn(updatedDuck);
 		when(this.mapper.map(updatedDuck, DuckDTO.class)).thenReturn(updatedDTO);
 
-		assertThat(updatedDTO).isEqualTo(this.service.updateDuck(newDuck, this.id));
+		assertThat(updatedDTO).isEqualTo(this.service.updateDuck(newDuck, this.ID));
 
 		verify(this.repo, times(1)).findById(1L);
 		verify(this.repo, times(1)).save(updatedDuck);
