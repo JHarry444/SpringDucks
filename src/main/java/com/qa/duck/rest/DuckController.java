@@ -18,44 +18,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.duck.dto.DuckDTO;
-
+import com.qa.duck.persistence.domain.Duck;
+import com.qa.duck.service.DuckService;
 
 @RestController
 @RequestMapping("/duck")
 @CrossOrigin
 public class DuckController {
 
-    private DuckService service;
+	private DuckService service;
 
-    @Autowired
-    public DuckController(DuckService service) {
-        super();
-        this.service = service;
-    }
+	@Autowired
+	public DuckController(DuckService service) {
+		super();
+		this.service = service;
+	}
 
-    @PostMapping("/createDuck")
-    public ResponseEntity<Duck> createDuck(@RequestBody Duck duck) {
-        return new ResponseEntity<Duck>(this.service.createDuck(duck), HttpStatus.CREATED);
-    }
+	@PostMapping("/createDuck")
+	public ResponseEntity<DuckDTO> createDuck(@RequestBody Duck duck) {
+		return new ResponseEntity<DuckDTO>(this.service.createDuck(duck), HttpStatus.CREATED);
+	}
 
-    @DeleteMapping("/deleteDuck/{id}")
-    public ResponseEntity<Duck> deleteDuck(@PathVariable Long id) {
-        return this.service.deleteDuck(id) ? new ResponseEntity<Duck>(HttpStatus.NO_CONTENT) : new ResponseEntity<Duck>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+	@DeleteMapping("/deleteDuck/{id}")
+	public ResponseEntity<DuckDTO> deleteDuck(@PathVariable Long id) {
+		return this.service.deleteDuck(id) ? new ResponseEntity<DuckDTO>(HttpStatus.NO_CONTENT)
+				: new ResponseEntity<DuckDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Duck> getDuck(@PathVariable Long id) {
-        return ResponseEntity.ok(this.service.findDuckByID(id));
-    }
+	@GetMapping("/get/{id}")
+	public ResponseEntity<DuckDTO> getDuck(@PathVariable Long id) {
+		return ResponseEntity.ok(this.service.findDuckByID(id));
+	}
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<Duck>> getAllDucks() {
-        return ResponseEntity.ok(this.service.readDucks());
-    }
+	@GetMapping("/getAll")
+	public ResponseEntity<List<DuckDTO>> getAllDucks() {
+		return ResponseEntity.ok(this.service.readDucks());
+	}
 
-    @PutMapping("/updateDuck")
-    public ResponseEntity<Duck> updateDuck(@PathParam("id") Long id, @RequestBody Duck duck) {
-        return new ResponseEntity<Duck>(this.service.updateDuck(duck, id), HttpStatus.ACCEPTED);
-    }
+	@PutMapping("/updateDuck")
+	public ResponseEntity<DuckDTO> updateDuck(@PathParam("id") Long id, @RequestBody Duck duck) {
+		return new ResponseEntity<DuckDTO>(this.service.updateDuck(duck, id), HttpStatus.ACCEPTED);
+	}
 
 }

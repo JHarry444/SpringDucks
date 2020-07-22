@@ -14,12 +14,12 @@ import com.qa.duck.persistence.repo.DuckRepo;
 import com.qa.duck.utils.MyBeanUtils;
 
 @Service
-public class DuckService  {
+public class DuckService {
 
 	private DuckRepo repo;
 
 	private Mapper<Duck, DuckDTO> mapper;
-	
+
 	@Autowired
 	public DuckService(DuckRepo repo, ModelMapper mapper) {
 		this.repo = repo;
@@ -35,7 +35,7 @@ public class DuckService  {
 			throw new DuckNotFoundException();
 		}
 		this.repo.deleteById(id);
-		return this.repo.existsById(id);
+		return !this.repo.existsById(id);
 	}
 
 	public DuckDTO findDuckByID(Long id) {

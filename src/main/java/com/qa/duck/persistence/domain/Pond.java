@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Pond {
 
@@ -18,8 +21,9 @@ public class Pond {
 	private String name;
 
 	@OneToMany(mappedBy = "pond")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Duck> ducks = new ArrayList<>();
-	
+
 	public Pond(String name) {
 		this.name = name;
 	}
