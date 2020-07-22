@@ -10,20 +10,18 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Duck {
 
 	@Id
 	@GeneratedValue
+	@EqualsAndHashCode.Exclude
 	private Long id;
 
 	@Column(name = "duck_name", unique = true)
@@ -42,7 +40,7 @@ public class Duck {
 	private int age;
 
 	@ManyToOne(targetEntity = Pond.class)
-	private Pond pond;
+	private Pond pond = null;
 
 	public Duck(String name, String colour, String habitat) {
 		super();
