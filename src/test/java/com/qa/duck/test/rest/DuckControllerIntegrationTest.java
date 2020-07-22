@@ -7,9 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -29,10 +27,9 @@ import com.qa.duck.dto.DuckDTO;
 import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.repo.DuckRepo;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class DuckControllerIntegrationTest {
+class DuckControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mock;
@@ -58,8 +55,8 @@ public class DuckControllerIntegrationTest {
 		return this.modelMapper.map(duck, DuckDTO.class);
 	}
 
-	@Before
-	public void init() {
+	@BeforeEach
+	void init() {
 		this.repo.deleteAll();
 		this.testDuck = new Duck("Barry", "blue", "pub");
 		this.testDuckWithID = this.repo.save(this.testDuck);
@@ -68,7 +65,7 @@ public class DuckControllerIntegrationTest {
 	}
 
 	@Test
-	public void testCreateDuck() throws Exception {
+	void testCreateDuck() throws Exception {
 		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/duck/createDuck");
 		mockRequest.contentType(MediaType.APPLICATION_JSON);
 		mockRequest.content(this.mapper.writeValueAsString(testDuck));
@@ -81,12 +78,12 @@ public class DuckControllerIntegrationTest {
 	}
 
 	@Test
-	public void testDeleteDuck() throws Exception {
+	void testDeleteDuck() throws Exception {
 		this.mock.perform(request(HttpMethod.DELETE, "/duck/deleteDuck/" + this.id)).andExpect(status().isNoContent());
 	}
 
 	@Test
-	public void testGetAllDucks() throws Exception {
+	void testGetAllDucks() throws Exception {
 		List<DuckDTO> duckList = new ArrayList<>();
 		duckList.add(this.duckDTO);
 
@@ -97,7 +94,7 @@ public class DuckControllerIntegrationTest {
 	}
 
 	@Test
-	public void testUpdateDuck() throws Exception {
+	void testUpdateDuck() throws Exception {
 		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
 		updatedDuck.setId(this.id);
