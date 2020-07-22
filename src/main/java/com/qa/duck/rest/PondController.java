@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.websocket.server.PathParam;
 
+import com.qa.duck.persistence.domain.Duck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,34 +36,33 @@ public class PondController {
 	}
 
 	@PostMapping("/createPond")
-	public ResponseEntity<PondDTO> createPond(@RequestBody Pond pond) {
-		return new ResponseEntity<PondDTO>(this.service.createPond(pond), HttpStatus.CREATED);
+	public ResponseEntity<Pond> createPond(@RequestBody Pond pond) {
+		return new ResponseEntity<Pond>(this.service.createPond(pond), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/deletePond/{id}")
-	public ResponseEntity<PondDTO> deletePond(@PathVariable Long id) {
-		return this.service.deletePond(id) ? ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-				: ResponseEntity.noContent().build();
+	public ResponseEntity<Pond> deletePond(@PathVariable Long id) {
+		return this.service.deletePond(id) ? new ResponseEntity<Pond>(HttpStatus.NO_CONTENT) : new ResponseEntity<Pond>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<PondDTO> getPond(@PathVariable Long id) {
+	public ResponseEntity<Pond> getPond(@PathVariable Long id) {
 		return ResponseEntity.ok(this.service.findPondByID(id));
 	}
 
 	@GetMapping("/getAll")
-	public ResponseEntity<List<PondDTO>> getAllPonds() {
+	public ResponseEntity<List<Pond>> getAllPonds() {
 		return ResponseEntity.ok(this.service.readPonds());
 	}
 
 	@PutMapping("/updatePond")
-	public ResponseEntity<PondDTO> updatePond(@PathParam("id") Long id, @RequestBody Pond pond) {
-		return new ResponseEntity<PondDTO>(this.service.updatePond(pond, id), HttpStatus.ACCEPTED);
+	public ResponseEntity<Pond> updatePond(@PathParam("id") Long id, @RequestBody Pond pond) {
+		return new ResponseEntity<Pond>(this.service.updatePond(pond, id), HttpStatus.ACCEPTED);
 	}
 
 	@PatchMapping("/update/{id}")
-	public ResponseEntity<PondDTO> addDuckToPond(@PathVariable Long id, @RequestBody Duck duck) {
-		return new ResponseEntity<PondDTO>(this.service.addDuckToPond(id, duck), HttpStatus.ACCEPTED);
+	public ResponseEntity<Pond> addPondToPond(@PathVariable Long id, @RequestBody Duck duck) {
+		return new ResponseEntity<Pond>(this.service.addDuckToPond(id, duck), HttpStatus.ACCEPTED);
 	}
 
 }
