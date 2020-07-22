@@ -1,5 +1,6 @@
 package com.qa.duck.persistence.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,8 +17,12 @@ public class Pond {
 
 	private String name;
 
-	@OneToMany
-	private List<Duck> ducks;
+	@OneToMany(mappedBy = "pond")
+	private List<Duck> ducks = new ArrayList<>();
+	
+	public Pond(String name) {
+		this.name = name;
+	}
 
 	public Pond() {
 	}

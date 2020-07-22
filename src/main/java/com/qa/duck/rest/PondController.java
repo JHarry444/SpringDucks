@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qa.duck.persistence.domain.Pond;
+import com.qa.duck.dto.PondDTO;
+import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.persistence.domain.Pond;
 import com.qa.duck.service.PondService;
 
@@ -43,7 +44,7 @@ public class PondController {
 	public ResponseEntity<Pond> deletePond(@PathVariable Long id) {
 		return this.service.deletePond(id) ? new ResponseEntity<Pond>(HttpStatus.NO_CONTENT) : new ResponseEntity<Pond>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@GetMapping("/get/{id}")
 	public ResponseEntity<Pond> getPond(@PathVariable Long id) {
 		return ResponseEntity.ok(this.service.findPondByID(id));
@@ -58,24 +59,10 @@ public class PondController {
 	public ResponseEntity<Pond> updatePond(@PathParam("id") Long id, @RequestBody Pond pond) {
 		return new ResponseEntity<Pond>(this.service.updatePond(pond, id), HttpStatus.ACCEPTED);
 	}
-	
+
 	@PatchMapping("/update/{id}")
 	public ResponseEntity<Pond> addPondToPond(@PathVariable Long id, @RequestBody Duck duck) {
 		return new ResponseEntity<Pond>(this.service.addDuckToPond(id, duck), HttpStatus.ACCEPTED);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
