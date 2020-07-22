@@ -76,9 +76,8 @@ public class DuckControllerIntegrationTest {
 
 		ResultMatcher matchStatus = MockMvcResultMatchers.status().isCreated();
 		ResultMatcher matchContent = MockMvcResultMatchers.content().json(this.mapper.writeValueAsString(duckDTO));
-		this.mock.perform(mockRequest)
-				.andExpect(matchStatus).andExpect(matchContent);
-		
+		this.mock.perform(mockRequest).andExpect(matchStatus).andExpect(matchContent);
+
 	}
 
 	@Test
@@ -99,7 +98,7 @@ public class DuckControllerIntegrationTest {
 
 	@Test
 	public void testUpdateDuck() throws Exception {
-		Duck newDuck = new Duck("Sir Duckington esq.", "Blue", "Duckington Manor");
+		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
 		updatedDuck.setId(this.id);
 

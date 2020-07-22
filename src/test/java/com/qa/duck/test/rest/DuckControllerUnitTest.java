@@ -36,29 +36,29 @@ public class DuckControllerUnitTest {
 
 	private List<Duck> duckList;
 
-	private Duck testDuck;
+	private DuckDTO testDuck;
 
 	private Duck testDuckWithID;
-	
+
 	private DuckDTO duckDTO;
 
 	final long id = 1L;
-	
+
 	private ModelMapper mapper = new ModelMapper();
-	
 
 	private DuckDTO mapToDTO(Duck duck) {
 		return this.mapper.map(duck, DuckDTO.class);
 	}
-	
-	
+
 	@Before
 	public void init() {
 		this.duckList = new ArrayList<>();
-		this.testDuck = new Duck("Ducktor Doom", "Grey", "Latveria");
-		this.duckList.add(testDuck);
+		this.testDuck = this.mapToDTO(new Duck("Ducktor Doom", "Grey", "Latveria"));
+
 		this.testDuckWithID = new Duck(testDuck.getName(), testDuck.getColour(), testDuck.getHabitat());
 		this.testDuckWithID.setId(id);
+
+		this.duckList.add(testDuckWithID);
 		this.duckDTO = this.mapToDTO(testDuckWithID);
 	}
 
@@ -66,7 +66,8 @@ public class DuckControllerUnitTest {
 	public void createDuckTest() {
 		when(this.service.createDuck(testDuck)).thenReturn(this.duckDTO);
 
-		assertEquals(new ResponseEntity<DuckDTO>(this.duckDTO, HttpStatus.CREATED), this.controller.createDuck(testDuck));
+		assertEquals(new ResponseEntity<DuckDTO>(this.duckDTO, HttpStatus.CREATED),
+				this.controller.createDuck(testDuck));
 
 		verify(this.service, times(1)).createDuck(this.testDuck);
 	}
@@ -100,13 +101,13 @@ public class DuckControllerUnitTest {
 	@Test
 	public void updateDucksTest() {
 		// given
-		Duck newDuck = new Duck("Sir Duckington esq.", "Blue", "Duckington Manor");
-		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
-		updatedDuck.setId(this.id);
+		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
+		DuckDTO updatedDuck = new DuckDTO(this.id, newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
 
-		when(this.service.updateDuck(newDuck, this.id)).thenReturn(this.mapToDTO(updatedDuck));
+		when(this.service.updateDuck(newDuck, this.id)).thenReturn(updatedDuck);
 
-		assertEquals(new ResponseEntity<DuckDTO>(this.mapToDTO(updatedDuck), HttpStatus.ACCEPTED), this.controller.updateDuck(this.id, newDuck));
+		assertEquals(new ResponseEntity<DuckDTO>(updatedDuck, HttpStatus.ACCEPTED),
+				this.controller.updateDuck(this.id, newDuck));
 
 		verify(this.service, times(1)).updateDuck(newDuck, this.id);
 	}

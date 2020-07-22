@@ -51,7 +51,7 @@ public class DuckServiceIntegrationTest {
 
 	@Test
 	public void testCreateDuck() {
-		assertEquals(this.mapToDTO(this.testDuckWithID), this.service.createDuck(testDuck));
+		assertEquals(this.mapToDTO(this.testDuckWithID), this.service.createDuck(mapToDTO(testDuck)));
 	}
 
 	@Test
@@ -73,11 +73,11 @@ public class DuckServiceIntegrationTest {
 
 	@Test
 	public void testUpdateDuck() {
-		Duck newDuck = new Duck("Sir Duckington esq.", "Blue", "Duckington Manor");
-		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
-		updatedDuck.setId(this.testDuckWithID.getId());
+		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
+		DuckDTO updatedDuck = new DuckDTO(this.testDuckWithID.getId(), newDuck.getName(), newDuck.getColour(),
+				newDuck.getHabitat());
 
-		assertThat(this.service.updateDuck(newDuck, this.testDuckWithID.getId())).isEqualTo(this.mapToDTO(updatedDuck));
+		assertThat(this.service.updateDuck(newDuck, this.testDuckWithID.getId())).isEqualTo(updatedDuck);
 	}
 
 }

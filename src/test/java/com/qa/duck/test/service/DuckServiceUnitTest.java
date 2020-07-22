@@ -45,6 +45,10 @@ public class DuckServiceUnitTest {
 
 	final long id = 1L;
 
+	private DuckDTO mapToDTO(Duck duck) {
+		return this.mapper.map(duck, DuckDTO.class);
+	}
+
 	@Before
 	public void init() {
 		this.duckList = new ArrayList<>();
@@ -57,10 +61,11 @@ public class DuckServiceUnitTest {
 
 	@Test
 	public void createDuckTest() {
+		when(this.mapper.map(mapToDTO(testDuck), Duck.class)).thenReturn(testDuck);
 		when(this.repo.save(testDuck)).thenReturn(testDuckWithID);
 		when(this.mapper.map(testDuckWithID, DuckDTO.class)).thenReturn(duckDTO);
 
-		assertEquals(this.duckDTO, this.service.createDuck(testDuck));
+		assertEquals(this.duckDTO, this.service.createDuck(mapToDTO(testDuck)));
 
 		verify(this.repo, times(1)).save(this.testDuck);
 	}
@@ -99,19 +104,18 @@ public class DuckServiceUnitTest {
 	@Test
 	public void updateDucksTest() {
 		// given
-		Duck newDuck = new Duck("Sir Duckington esq.", "Blue", "Duckington Manor");
-		
+		final long ID = 1L;
+		DuckDTO newDuck = new DuckDTO(null, "Daffy", "Black", "WB Studios");
+		Duck duck = new Duck("Donald", "White", "Disney World");
+		duck.setId(ID);
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
-		updatedDuck.setId(this.id);
-		
-		DuckDTO updatedDTO = new ModelMapper().map(updatedDuck, DuckDTO.class);
+		updatedDuck.setId(ID);
+		DuckDTO updatedDTO = new DuckDTO(ID, updatedDuck.getName(), updatedDuck.getColour(), updatedDuck.getHabitat());
 
-		
-		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testDuckWithID));
-		when(this.mapper.map(updatedDuck, DuckDTO.class)).thenReturn(updatedDTO);
-
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(duck));
 		// You NEED to configure a .equals() method in Duck.java for this to work
 		when(this.repo.save(updatedDuck)).thenReturn(updatedDuck);
+		when(this.mapper.map(updatedDuck, DuckDTO.class)).thenReturn(updatedDTO);
 
 		assertEquals(updatedDTO, this.service.updateDuck(newDuck, this.id));
 

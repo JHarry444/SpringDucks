@@ -7,7 +7,6 @@ import java.util.Set;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.BeansException;
 
 public class MyBeanUtils {
 
@@ -15,7 +14,7 @@ public class MyBeanUtils {
 
 	}
 
-	public static void mergeNotNull(Object source, Object target) throws BeansException {
+	public static void mergeNotNull(Object source, Object target) {
 		BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
 	}
 
