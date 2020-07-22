@@ -11,7 +11,16 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Pond {
 
 	@Id
@@ -26,33 +35,6 @@ public class Pond {
 
 	public Pond(String name) {
 		this.name = name;
-	}
-
-	public Pond() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<Duck> getDucks() {
-		return ducks;
-	}
-
-	public void setDucks(List<Duck> ducks) {
-		this.ducks = ducks;
 	}
 
 }
