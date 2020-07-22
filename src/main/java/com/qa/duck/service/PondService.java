@@ -30,7 +30,6 @@ public class PondService {
 		this.mapper = (Pond pond) -> mapper.map(pond, PondDTO.class);
 	}
 
-
 	public PondDTO createPond(Pond pond) {
 		return this.mapper.mapToDTO(this.repo.save(pond));
 	}
@@ -40,7 +39,7 @@ public class PondService {
 			throw new PondNotFoundException();
 		}
 		this.repo.deleteById(id);
-		return this.repo.existsById(id);
+		return !this.repo.existsById(id);
 	}
 
 	public PondDTO findPondByID(Long id) {

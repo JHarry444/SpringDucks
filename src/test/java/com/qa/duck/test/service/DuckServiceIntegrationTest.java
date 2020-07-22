@@ -32,10 +32,10 @@ public class DuckServiceIntegrationTest {
 	private Duck testDuck;
 
 	private Duck testDuckWithID;
-	
+
 	@Autowired
 	private ModelMapper mapper;
-	
+
 	private DuckDTO mapToDTO(Duck duck) {
 		return this.mapper.map(duck, DuckDTO.class);
 	}
@@ -43,12 +43,12 @@ public class DuckServiceIntegrationTest {
 	@Before
 	public void init() {
 		this.testDuck = new Duck("Ducktor Doom", "Grey", "Latveria");
-		
+
 		this.repo.deleteAll();
-		//getting around auto-generated id's
+		// getting around auto-generated id's
 		this.testDuckWithID = this.repo.save(this.testDuck);
 	}
-	
+
 	@Test
 	public void testCreateDuck() {
 		assertEquals(this.mapToDTO(this.testDuckWithID), this.service.createDuck(testDuck));
@@ -56,17 +56,19 @@ public class DuckServiceIntegrationTest {
 
 	@Test
 	public void testDeleteDuck() {
-		assertThat(this.service.deleteDuck(this.testDuckWithID.getId())).isFalse();
+		assertThat(this.service.deleteDuck(this.testDuckWithID.getId())).isTrue();
 	}
 
 	@Test
 	public void testFindDuckByID() {
-		assertThat(this.service.findDuckByID(this.testDuckWithID.getId())).isEqualTo(this.mapToDTO(this.testDuckWithID));
+		assertThat(this.service.findDuckByID(this.testDuckWithID.getId()))
+				.isEqualTo(this.mapToDTO(this.testDuckWithID));
 	}
 
 	@Test
 	public void testReadDucks() {
-		assertThat(this.service.readDucks()).isEqualTo(Stream.of(this.mapToDTO(testDuckWithID)).collect(Collectors.toList()));
+		assertThat(this.service.readDucks())
+				.isEqualTo(Stream.of(this.mapToDTO(testDuckWithID)).collect(Collectors.toList()));
 	}
 
 	@Test
