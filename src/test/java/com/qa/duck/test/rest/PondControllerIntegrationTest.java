@@ -9,50 +9,58 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qa.duck.dto.PondDTO;
 import com.qa.duck.persistence.domain.Pond;
-import com.qa.duck.persistence.repo.PondRepo;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Sql(scripts = { "classpath:test-schema.sql",
+		"classpath:test-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 class PondControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mock;
 
 	@Autowired
-	private PondRepo repo;
+	private ModelMapper modelMapper;
 
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	private ObjectMapper mapper;
 
-	private long id;
+	private PondDTO mapToDTO(Pond pond) {
+		return this.modelMapper.map(pond, PondDTO.class);
+	}
 
-	private Pond testPond;
+	private long id = 1L;
 
-	private Pond testPondWithID;
+	final private Pond TEST_POND = new Pond(this.id, "Duckinghamshire");
 
 	@BeforeEach
 	void init() {
-		this.repo.deleteAll();
-		this.testPond = new Pond("Duckinghamshire");
-		this.testPondWithID = this.repo.save(this.testPond);
-		this.id = this.testPondWithID.getId();
 	}
 
 	@Test
 	void testCreatePond() throws Exception {
+		Pond newPond = new Pond("Amy");
+		Pond savedPond = new Pond(newPond.getName());
+		savedPond.setId(this.id + 1);
+		PondDTO savedPondDTO = this.mapToDTO(savedPond);
 		this.mock
 				.perform(request(HttpMethod.POST, "/pond/createPond").contentType(MediaType.APPLICATION_JSON)
-						.content(this.mapper.writeValueAsString(testPond)).accept(MediaType.APPLICATION_JSON))
+						.content(this.mapper.writeValueAsString(newPond)).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
-				.andExpect(content().json(this.mapper.writeValueAsString(testPondWithID)));
+				.andExpect(content().json(this.mapper.writeValueAsString(savedPondDTO)));
 	}
 
 	@Test
@@ -62,14 +70,15 @@ class PondControllerIntegrationTest {
 
 	@Test
 	void testGetPond() throws Exception {
+		PondDTO expectedResult = this.mapToDTO(TEST_POND);
 		this.mock.perform(request(HttpMethod.GET, "/pond/get/" + this.id).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andExpect(content().json(this.mapper.writeValueAsString(this.testPond)));
+				.andExpect(status().isOk()).andExpect(content().json(this.mapper.writeValueAsString(expectedResult)));
 	}
 
 	@Test
 	void testGetAllPonds() throws Exception {
-		List<Pond> pondList = new ArrayList<>();
-		pondList.add(this.testPondWithID);
+		List<PondDTO> pondList = new ArrayList<>();
+		pondList.add(this.mapToDTO(TEST_POND));
 
 		this.mock.perform(request(HttpMethod.GET, "/pond/getAll").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().json(this.mapper.writeValueAsString(pondList)));
@@ -78,14 +87,13 @@ class PondControllerIntegrationTest {
 	@Test
 	void testUpdatePond() throws Exception {
 		Pond newPond = new Pond("Amy");
-		Pond updatedPond = new Pond(newPond.getName());
-		updatedPond.setId(this.id);
-
+		Pond updatedPond = new Pond(this.id, newPond.getName());
+		PondDTO updatedPondDTO = this.mapToDTO(updatedPond);
 		this.mock
 				.perform(request(HttpMethod.PUT, "/pond/updatePond/?id=" + this.id).accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON).content(this.mapper.writeValueAsString(newPond)))
 				.andExpect(status().isAccepted())
-				.andExpect(content().json(this.mapper.writeValueAsString(updatedPond)));
+				.andExpect(content().json(this.mapper.writeValueAsString(updatedPondDTO)));
 	}
 
 }
