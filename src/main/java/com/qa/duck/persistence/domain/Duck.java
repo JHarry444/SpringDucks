@@ -38,7 +38,7 @@ public class Duck {
 
 	@Min(0)
 	@Max(30)
-	private int age;
+	private Integer age;
 
 	@ManyToOne(targetEntity = Pond.class)
 	private Pond pond = null;
