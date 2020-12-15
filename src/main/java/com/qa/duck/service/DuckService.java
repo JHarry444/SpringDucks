@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -60,6 +63,10 @@ public class DuckService {
 
 	public List<DuckDTO> readDucks() {
 		return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+	}
+	
+	public List<DuckDTO> superDucks(Direction direction, String field, Duck duck) {
+		return this.repo.findAll(Example.of(duck), Sort.by(direction, field)).stream().map(this::mapToDTO).collect(Collectors.toList());
 	}
 
 	public DuckDTO updateDuck(DuckDTO duck, Long id) {

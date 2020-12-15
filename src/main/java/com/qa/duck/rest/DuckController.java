@@ -5,6 +5,7 @@ import java.util.List;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.duck.dto.DuckDTO;
+import com.qa.duck.persistence.domain.Duck;
 import com.qa.duck.service.DuckService;
 
 @RestController
@@ -52,6 +54,11 @@ public class DuckController {
 	@GetMapping("/getAll")
 	public ResponseEntity<List<DuckDTO>> getAllDucks() {
 		return ResponseEntity.ok(this.service.readDucks());
+	}
+	
+	@GetMapping("/getAll/{field}/{direction}")
+	public ResponseEntity<List<DuckDTO>> superDucks(@PathVariable String field, @PathVariable Direction direction, @RequestBody Duck duck) {
+		return ResponseEntity.ok(this.service.superDucks(direction, field, duck));
 	}
 
 	@PutMapping("/updateDuck")

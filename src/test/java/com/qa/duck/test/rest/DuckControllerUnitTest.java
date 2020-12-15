@@ -100,8 +100,8 @@ class DuckControllerUnitTest {
 	@Test
 	void updateDucksTest() {
 		// given
-		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
-		DuckDTO updatedDuck = new DuckDTO(this.id, newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
+		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", 25, "Blue", "Duckington Manor");
+		DuckDTO updatedDuck = new DuckDTO(this.id, newDuck.getName(), 25, newDuck.getColour(), newDuck.getHabitat());
 
 		when(this.service.updateDuck(newDuck, this.id)).thenReturn(updatedDuck);
 
