@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class DuckDTO {
+public final class DuckDTO {
 
 	private Long id;
 

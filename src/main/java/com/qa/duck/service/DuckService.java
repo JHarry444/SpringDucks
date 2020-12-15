@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.qa.duck.dto.DuckDTO;
 import com.qa.duck.exceptions.DuckNotFoundException;
@@ -49,7 +51,11 @@ public class DuckService {
 	}
 
 	public DuckDTO findDuckByID(Long id) {
-		return this.mapToDTO(this.repo.findById(id).orElseThrow(DuckNotFoundException::new));
+		final Duck found = this.repo.findById(id)
+				.orElseThrow(() -> {
+					return new ResponseStatusException(HttpStatus.NOT_FOUND, "This duck does not exist");
+				});
+		return this.mapToDTO(found);
 	}
 
 	public List<DuckDTO> readDucks() {

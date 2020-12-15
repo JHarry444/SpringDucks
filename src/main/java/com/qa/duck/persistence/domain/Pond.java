@@ -5,26 +5,25 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Pond {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Exclude
 	private Long id;
 
 	private String name;
@@ -32,6 +31,11 @@ public class Pond {
 	@OneToMany(mappedBy = "pond")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Duck> ducks = new ArrayList<>();
+
+	public Pond(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	public Pond(String name) {
 		this.name = name;
