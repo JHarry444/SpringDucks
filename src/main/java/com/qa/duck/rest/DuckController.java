@@ -57,8 +57,8 @@ public class DuckController {
 	}
 	
 	@GetMapping("/getAll/{field}/{direction}")
-	public ResponseEntity<List<DuckDTO>> superDucks(@PathVariable String field, @PathVariable Direction direction, @RequestBody Duck duck) {
-		return ResponseEntity.ok(this.service.superDucks(direction, field, duck));
+	public ResponseEntity<List<DuckDTO>> sortAndFilterDucks(@PathVariable String field, @PathVariable Direction direction, @RequestBody Duck duck) {
+		return ResponseEntity.ok(this.service.sortAndFilterDucks(direction, field, duck));
 	}
 
 	@PutMapping("/updateDuck")

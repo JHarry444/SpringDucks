@@ -65,7 +65,7 @@ public class DuckService {
 		return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
 	}
 	
-	public List<DuckDTO> superDucks(Direction direction, String field, Duck duck) {
+	public List<DuckDTO> sortAndFilterDucks(Direction direction, String field, Duck duck) {
 		return this.repo.findAll(Example.of(duck), Sort.by(direction, field)).stream().map(this::mapToDTO).collect(Collectors.toList());
 	}
 
