@@ -11,4 +11,5 @@ import com.qa.duck.persistence.domain.Duck;
 public interface DuckRepo extends JpaRepository<Duck, Long> {
 
 	List<Duck> findByColour(String colour);
+		
 }

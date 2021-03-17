@@ -55,7 +55,7 @@ class DuckServiceUnitTest {
 
 	@Test
 	void createDuckTest() {
-		DuckDTO newDuckDTO = new DuckDTO(null, "Ducktor Doom", "Grey", "Latveria");
+		DuckDTO newDuckDTO = new DuckDTO(null, "Ducktor Doom", 25, "Grey", "Latveria");
 
 		when(this.mapper.map(newDuckDTO, Duck.class)).thenReturn(testDuck);
 		when(this.repo.save(testDuck)).thenReturn(testDuckWithID);
@@ -101,12 +101,15 @@ class DuckServiceUnitTest {
 	void updateDucksTest() {
 		// given
 		final long ID = 1L;
-		DuckDTO newDuck = new DuckDTO(null, "Daffy", "Black", "WB Studios");
+		DuckDTO newDuck = new DuckDTO(null, "Daffy", 25, "Black", "WB Studios");
 		Duck duck = new Duck("Donald", "White", "Disney World");
+		duck.setAge(25);
 		duck.setId(ID);
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
+		updatedDuck.setAge(25);
 		updatedDuck.setId(ID);
-		DuckDTO updatedDTO = new DuckDTO(ID, updatedDuck.getName(), updatedDuck.getColour(), updatedDuck.getHabitat());
+		DuckDTO updatedDTO = new DuckDTO(ID, updatedDuck.getName(), 25, updatedDuck.getColour(),
+				updatedDuck.getHabitat());
 
 		when(this.repo.findById(this.ID)).thenReturn(Optional.of(duck));
 		// You NEED to configure a .equals() method in Duck.java for this to work

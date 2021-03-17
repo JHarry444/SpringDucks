@@ -69,8 +69,8 @@ class DuckServiceIntegrationTest {
 
 	@Test
 	void testUpdateDuck() {
-		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
-		DuckDTO updatedDuck = new DuckDTO(this.testDuckWithID.getId(), newDuck.getName(), newDuck.getColour(),
+		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", 25, "Blue", "Duckington Manor");
+		DuckDTO updatedDuck = new DuckDTO(this.testDuckWithID.getId(), newDuck.getName(), 25, newDuck.getColour(),
 				newDuck.getHabitat());
 
 		assertThat(this.service.updateDuck(newDuck, this.testDuckWithID.getId())).isEqualTo(updatedDuck);

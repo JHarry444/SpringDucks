@@ -84,8 +84,8 @@ class DuckControllerIntegrationTest {
 
 	@Test
 	void testUpdateDuck() throws Exception {
-		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", "Blue", "Duckington Manor");
-		Duck updatedDuck = new Duck(this.TEST_DUCK_FROM_DB.getId(), newDuck.getName(), newDuck.getColour(),
+		DuckDTO newDuck = new DuckDTO(null, "Sir Duckington esq.", 25, "Blue", "Duckington Manor");
+		DuckDTO updatedDuck = new DuckDTO(this.TEST_DUCK_FROM_DB.getId(), newDuck.getName(), 25, newDuck.getColour(),
 				newDuck.getHabitat());
 
 		String result = this.mock
@@ -94,7 +94,7 @@ class DuckControllerIntegrationTest {
 						.content(this.mapper.writeValueAsString(newDuck)))
 				.andExpect(status().isAccepted()).andReturn().getResponse().getContentAsString();
 
-		assertEquals(this.mapper.writeValueAsString(this.mapToDTO(updatedDuck)), result);
+		assertEquals(this.mapper.writeValueAsString(updatedDuck), result);
 	}
 
 }

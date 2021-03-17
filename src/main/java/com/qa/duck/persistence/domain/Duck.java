@@ -38,7 +38,7 @@ public class Duck {
 
 	@Min(0)
 	@Max(30)
-	private int age;
+	private Integer age;
 
 	@ManyToOne(targetEntity = Pond.class)
 	private Pond pond = null;
@@ -57,6 +57,16 @@ public class Duck {
 		this.name = name;
 		this.colour = colour;
 		this.habitat = habitat;
+	}
+
+	public Duck(Long id, @NotNull @Size(min = 0, max = 55) String name, @NotNull String colour, @NotNull String habitat,
+			@Min(0) @Max(30) Integer age) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.colour = colour;
+		this.habitat = habitat;
+		this.age = age;
 	}
 
 }
