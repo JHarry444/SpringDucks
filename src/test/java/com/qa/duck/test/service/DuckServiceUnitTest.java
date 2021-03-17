@@ -108,7 +108,8 @@ class DuckServiceUnitTest {
 		Duck updatedDuck = new Duck(newDuck.getName(), newDuck.getColour(), newDuck.getHabitat());
 		updatedDuck.setAge(25);
 		updatedDuck.setId(ID);
-		DuckDTO updatedDTO = new DuckDTO(ID, updatedDuck.getName(), 25, updatedDuck.getColour(), updatedDuck.getHabitat());
+		DuckDTO updatedDTO = new DuckDTO(ID, updatedDuck.getName(), 25, updatedDuck.getColour(),
+				updatedDuck.getHabitat());
 
 		when(this.repo.findById(this.ID)).thenReturn(Optional.of(duck));
 		// You NEED to configure a .equals() method in Duck.java for this to work

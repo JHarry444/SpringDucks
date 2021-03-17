@@ -59,4 +59,14 @@ public class Duck {
 		this.habitat = habitat;
 	}
 
+	public Duck(Long id, @NotNull @Size(min = 0, max = 55) String name, @NotNull String colour, @NotNull String habitat,
+			@Min(0) @Max(30) Integer age) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.colour = colour;
+		this.habitat = habitat;
+		this.age = age;
+	}
+
 }
